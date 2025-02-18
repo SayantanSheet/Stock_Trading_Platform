@@ -1,23 +1,25 @@
 require("dotenv").config();
-
-const mongoose = require('mongoose');
-const express = require('express');
-const bodyParser = require("body-parser");
 const cors=require("cors");
+const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const authRoute = require("./routes/AuthRoute");
+const express = require('express');
+const mongoose = require('mongoose');
+
+const PORT=process.env.PORT || 3002;
+const url=process.env.MONGO_URL;
 
 const {HoldingsModel}=require('./model/HoldingsModel');
 const {PositionsModel}=require('./model/PositionsModel');
 const {OrdersModel}=require('./model/OrdersModel');
-
-const PORT=process.env.PORT || 3002;
-const uri=process.env.MONGO_URL;
+const {WatchlistModel}=require('./model/WatchlistModel');
+const {SignUp}= require('./utility/AuthController');
+const {LogIn} = require('./utility/AuthController');
 
 const app = express();
 
-app.use(cors());
 app.use(bodyParser.json());
+app.use(express.json());
+app.use(cors());
 app.use(cookieParser());
 //ADD HOLDING DATA TO MONGODB FOR 1 TIME RUN IN BROWSER (http://localhost:3002/addHoldings)
 // app.get("/addHoldings",async(req,res)=>{
@@ -187,8 +189,11 @@ app.use(cookieParser());
 //     res.send("Positions added successfully");
 // })
 
-app.use("/", authRoute);
-
+app.listen(PORT, ()=>{
+  console.log('Server running on port ${PORT}');
+  mongoose.connect(url);
+  console.log("DB connect")
+});
 //FOR DATA FETCH FORM DATABASE
 app.get("/allHoldings",async(req,res)=>{
     let allHoldings = await HoldingsModel.find({});
@@ -200,6 +205,12 @@ app.get("/allPositions",async(req,res)=>{
     res.json(allPositions);
 });
 
+app.get('/watchlist', async(req, res)=>{
+  let watchlistData = await WatchlistModel.find({});
+  res.json(watchlistData);
+})
+
+//saving newOrder data to DB from dashboard
 app.post("/newOrder",async(req,res)=>{
     let newOrder = new OrdersModel({
         name: req.body.name,
@@ -209,21 +220,10 @@ app.post("/newOrder",async(req,res)=>{
     });
     newOrder.save();
     res.send("New order added successfully");
+    console.log("newOrder data",req.body);
 })
 
-app.get("/getAvailableQuantity", (req, res) => {
-    const { uid } = req.query;
-    const stock = HoldingsModel.find((s) => s.uid === uid);
-  
-    if (stock) {
-      res.json({ availableQuantity: stock.availableQuantity });
-    } else {
-      res.status(404).json({ error: "Stock not found" });
-    }
-  });
+app.post("/signUp", SignUp);
 
-app.listen(3002, ()=>{
-    console.log('Server running on port 3002');
-    mongoose.connect(uri);
-    console.log("DB connect")
-});
+app.post('/Login', LogIn);
+
