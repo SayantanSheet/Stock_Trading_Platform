@@ -842,5 +842,97 @@ hr {
   background-color: rgb(212, 212, 212);
 }
 
+/* Add responsive styles for the Apps component */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 24px;
+    text-align: center;
+    margin: 20px;
+  }
+}
+
+/* Add responsive styles for the Funds component */
+@media (max-width: 768px) {
+  .funds {
+    text-align: center;
+    padding: 10px;
+  }
+
+  .funds p {
+    font-size: 14px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 10px;
+    margin: 5px 0;
+    width: 100%;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .col {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .table .data p {
+    font-size: 14px;
+  }
+
+  .table .data .imp {
+    font-size: 16px;
+  }
+
+  .commodity {
+    text-align: center;
+    padding: 10px;
+  }
+
+  .commodity p {
+    font-size: 14px;
+  }
+}
+
+/* Add responsive styles for the Holdings component */
+@media (max-width: 768px) {
+  .order-table {
+    overflow-x: auto;
+  }
+
+  .order-table table {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .order-table th, .order-table td {
+    padding: 8px;
+    text-align: center;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .col {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .col h5 {
+    font-size: 18px;
+  }
+
+  .col p {
+    font-size: 14px;
+  }
+}
+
 
 

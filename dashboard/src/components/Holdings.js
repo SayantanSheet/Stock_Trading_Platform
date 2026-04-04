@@ -29,69 +29,80 @@ const Holdings = () => {
     })
   }, []);
 
+  // Calculate total values
+  const totalInvestment = allHoldings.reduce((acc, stock) => acc + (stock.qty * stock.avg), 0);
+  const currentValue = allHoldings.reduce((acc, stock) => acc + (stock.qty * stock.price), 0);
+  const totalPnL = currentValue - totalInvestment;
+  const pnlPercentage = totalInvestment !== 0 ? (totalPnL / totalInvestment) * 100 : 0;
+  const isProfit = totalPnL >= 0;
+  const pnlClass = isProfit ? "profit" : "loss";
+
   return (
     <>
       <h3 className="title">Holdings {allHoldings.length}</h3>
 
       <div className="order-table">
         <table>
-          <tr>
-            <th>Instrument</th>
-            <th>Qty.</th>
-            <th>Avg. cost</th>
-            <th>LTP</th>
-            <th>Cur. val</th>
-            <th>P&L</th>
-            <th>Net chg.</th>
-            <th>Day chg.</th>
-          </tr>
-
-          {
-            allHoldings.map( (stock, index)=>{
+          <thead>
+            <tr>
+              <th>Instrument</th>
+              <th>Qty.</th>
+              <th>Avg. cost</th>
+              <th>LTP</th>
+              <th>Cur. val</th>
+              <th>P&L</th>
+              <th>Net chg.</th>
+              <th>Day chg.</th>
+            </tr>
+          </thead>
+          <tbody>
+            {allHoldings.map((stock, index) => {
               const curValue = stock.qty * stock.price;
-              const isProfit = curValue-stock.avg*stock.qty >=0.0;
-              const profClass = isProfit ? "profit" : "loss";
+              const isStockProfit = curValue - stock.avg * stock.qty >= 0.0;
+              const stockProfClass = isStockProfit ? "profit" : "loss";
               const dayClass = stock.isLoss ? "loss" : "profit";
 
-              return(
-                <tr key={index} >
+              return (
+                <tr key={index}>
                   <td>{stock.name}</td>
                   <td>{stock.qty}</td>
                   <td>{stock.avg.toFixed(2)}</td>
                   <td>{stock.price.toFixed(2)}</td>
                   <td>{curValue.toFixed(2)}</td>
-                  <td className={profClass}>
-                    {(curValue-stock.avg*stock.qty).toFixed(2)}
+                  <td className={stockProfClass}>
+                    {(curValue - stock.avg * stock.qty).toFixed(2)}
                   </td>
-                  <td className={profClass}>{stock.net}</td>
+                  <td className={stockProfClass}>{stock.net}</td>
                   <td className={dayClass}>{stock.day}</td>
-              </tr>
+                </tr>
               );
-            })
-          }
+            })}
+          </tbody>
         </table>
       </div>
 
       <div className="row">
         <div className="col">
           <h5>
-            29,875.<span>55</span>{" "}
+            {totalInvestment.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </h5>
           <p>Total investment</p>
         </div>
         <div className="col">
           <h5>
-            31,428.<span>95</span>{" "}
+            {currentValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </h5>
           <p>Current value</p>
         </div>
         <div className="col">
-          <h5>1,553.40 (+5.20%)</h5>
+          <h5 className={pnlClass}>
+            {totalPnL.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ({pnlPercentage.toFixed(2)}%)
+          </h5>
           <p>P&L</p>
         </div>
       </div>
 
-      <VerticalGraph data={data}/>
+      <VerticalGraph data={data} />
     </>
   );
 };

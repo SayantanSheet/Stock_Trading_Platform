@@ -1,0 +1,139 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.nav-link{
+  margin-left:40px;
+}
+.foot-link{
+  text-decoration: none;
+  color: #333;
+}
+
+#supportHero{
+  background-color: rgb(56, 126, 209);
+  color: white;
+}
+
+#supportHero a{
+  color: white;
+  margin-left: 20px;
+}
+
+#supportWrapper{
+  display: flex;
+  justify-content: space-between;
+  margin: 0 150px;
+}
+
+#supportHero input{
+  padding: 20px 50px;
+  width:100%;
+  font-size: 20px;
+  border-radius:10px;
+  border: none;
+}
+
+/* Add responsive styles for the Footer component */
+@media (max-width: 768px) {
+  footer .container {
+    padding: 10px;
+  }
+
+  footer .row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  footer .col {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  footer img {
+    width: 70%;
+  }
+
+  footer p {
+    font-size: 14px;
+  }
+
+  footer a {
+    font-size: 14px;
+  }
+
+  footer .text-muted {
+    font-size: 12px;
+    text-align: center;
+  }
+}
+
+/* Add responsive styles for the Navbar component */
+@media (max-width: 768px) {
+  .navbar-brand img {
+    width: 50%;
+  }
+
+  .navbar-nav {
+    text-align: center;
+  }
+
+  .nav-link {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .navbar-toggler {
+    border: none;
+  }
+
+  .navbar-toggler-icon {
+    background-color: #333;
+  }
+}
+
+/* Add responsive styles for the NotFound component */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  .row h1 {
+    font-size: 24px;
+  }
+
+  .row p {
+    font-size: 16px;
+  }
+}
+
+/* Add responsive styles for the OpenAccount component */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .row h1 {
+    font-size: 24px;
+  }
+
+  .row p {
+    font-size: 16px;
+  }
+
+  .btn {
+    width: 80%;
+    font-size: 16px;
+  }
+}
+

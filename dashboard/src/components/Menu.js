@@ -1,13 +1,35 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 import "./UserWidget.css";
-import axios from "axios";
 
 const Menu = () => {
   const [selectedMenu, setSelectedMenu] = useState(0);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-  
+  const [userName, setUserName] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.post(
+          `${process.env.REACT_APP_BACKEND_URL}/verifyCookie`,
+          {},
+          { withCredentials: true }
+        );
+        if (res.data.status) {
+          const email = res.data.user;
+          const namePart = email.split("@")[0];
+          setUserName(namePart.toUpperCase());
+          setUserAvatar(namePart.substring(0, 2).toUpperCase());
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const handleMenuClick = (index)=>{
     setSelectedMenu(index);
@@ -37,7 +59,7 @@ const Menu = () => {
 
   return (
     <div className="menu-container">
-      <img src="/logo.png" style={{ width: "50px" }} />
+      <img src="/logo.png" style={{ width: "50px" }} alt="logo" />
       <div className="menus">
         <ul>
           <li>
@@ -104,8 +126,8 @@ const Menu = () => {
            onClick={ ()=>handleProfileClick() }  
             
         >
-          <div className="avatar">ZU</div>
-          <p className="username">USERID</p>
+          <div className="avatar">{userAvatar || "ZU"}</div>
+          <p className="username">{userName || "USERID"}</p>
         </div>
 
         {isProfileDropdownOpen &&

@@ -1,0 +1,50 @@
+/* Navbar Highlight Styling */
+.navbar-nav .nav-link {
+  color: #666 !important;
+  font-weight: 500;
+  padding: 8px 20px !important;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #384aff !important;
+}
+
+/* Active Highlight Style */
+.navbar-nav .nav-link.active {
+  color: #384aff !important;
+  font-weight: 600;
+}
+
+.navbar-nav .nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  left: 20px;
+  right: 20px;
+  height: 2.5px;
+  background-color: #384aff;
+  border-radius: 2px;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Navbar overall styling improvements */
+.navbar {
+  box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+  padding: 1rem 0;
+  z-index: 1000;
+}
+
+.navbar-brand img {
+  transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.05);
+}

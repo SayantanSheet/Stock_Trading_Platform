@@ -219,3 +219,44 @@
     color: #fff;
   }
   
+  /* Add responsive styles for the BuyActionWindow component */
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+    height: auto;
+    left: 5%;
+    bottom: 10%;
+    padding: 10px;
+  }
+
+  .container .header {
+    padding: 10px;
+  }
+
+  .header h3 {
+    font-size: 0.9rem;
+  }
+
+  .regular-order {
+    padding: 10px;
+  }
+
+  .inputs fieldset {
+    max-width: 100px;
+  }
+
+  .inputs fieldset input {
+    font-size: 0.9rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .btn {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
