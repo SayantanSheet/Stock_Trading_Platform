@@ -12,6 +12,8 @@ import PricingPage from './landing_page/pricing/PricingPage';
 import SupportPage from './landing_page/support/SupportPage';
 import Navbar from './landing_page/Navbar';
 import Footer from './landing_page/Footer';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import NotFound from './landing_page/NotFound';
 
 
@@ -29,6 +31,7 @@ root.render(
     <Route path="/support" element={<SupportPage />} />
     <Route path="*" element={<NotFound />} />
   </Routes>
+  <ToastContainer />
   <Footer />
   </BrowserRouter>
 );

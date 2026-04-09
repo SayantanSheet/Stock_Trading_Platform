@@ -2,37 +2,32 @@ import React from 'react';
 import './Login.css';
 import {useState} from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [userExistance, setUserExistance] = useState(true);
 
     const handleSubmit = (event)=>{
         event.preventDefault();
         axios.post(`${process.env.REACT_APP_BACKEND_URL}/login`, {email, password}, {withCredentials: true})
         .then( (res)=>{
             if(res.status === 201){
-                console.log("User exists");
+                toast.success("Login Successful!");
                 setTimeout(()=>{
                     window.location.href = process.env.REACT_APP_DASHBOARD_URL;
                 },500);
             }else if(res.status === 202){
-                console.log("User does not exist");
-                setUserExistance(false);
+                toast.error("Incorrect password or email! Please try again.");
             }
         })
         .catch((err)=>{
             console.error("Login Error: ", err);
-            setUserExistance(false);
+            toast.error("An error occurred during login. Please try again.");
         })
 
         setEmail("");
         setPassword("");
-    }
-
-    const closePopup = ()=>{
-        setUserExistance(true);
     }
 
     return ( 
@@ -72,18 +67,8 @@ function Login() {
                     Don't have an account? <a href="/signup" style={{color: 'var(--primary-color)', fontWeight: '600', textDecoration: 'none'}}>Sign Up</a>
                 </p>
             </form>
-
-            { !userExistance && 
-            <div className='popup'>
-                <div className='popup-content'>
-                    <p>Incorrect password or email! Please try again.</p>
-                    <button onClick={closePopup} className='btn-close-popup'>Try Again</button>
-                </div>
-            </div>
-            }
         </div>
     );
 }
 
 export default Login;
-

@@ -2,41 +2,31 @@ import React from 'react';
 import './Signup.css';
 import {useState} from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function Signup() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [userExistance, setUserExistance] = useState(false);
-
-    const closePopup = ()=>{
-        setUserExistance(false);
-    }
 
     const handleSubmit = (event)=>{
-
         event.preventDefault();
-
         axios.post(`${process.env.REACT_APP_BACKEND_URL}/signUp`, {name, email, password}, {withCredentials: true})
         .then( (res)=>{
-            //checks the status code. if 201, user is new and brings user in dashboard
             if(res.status === 201){
+                toast.success("Account created successfully!");
                 setTimeout(()=>{
                     window.location.href = process.env.REACT_APP_DASHBOARD_URL;
-                    
                 },500);
-                
-            //if 202, shows user a pop up, that the user exist & stays the user in signup page
             }else if(res.status === 202){
-                setUserExistance(true);
+                toast.error("User already exists! Please Log in.");
             }
         })
         .catch((err)=>{
             console.error("Signup Error: ", err);
-            setUserExistance(true);
+            toast.error("An error occurred during signup.");
         })
 
-        
         setName("");
         setEmail("");
         setPassword("");
@@ -92,15 +82,6 @@ function Signup() {
                     Already have an account? <a href="/login" style={{color: 'var(--primary-color)', fontWeight: '600', textDecoration: 'none'}}>Log In</a>
                 </p>
             </form>
-
-            {userExistance && 
-            <div className='popup'>
-                <div className='popup-content'>
-                    <p>The user already exists! Please Log in</p>
-                    <button onClick={closePopup} className='btn-close-popup'>Go to Login</button>
-                </div>
-            </div>
-            }
         </div>
     );
 }
