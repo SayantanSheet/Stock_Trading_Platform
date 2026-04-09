@@ -4,6 +4,7 @@ import {useState} from 'react';
 import axios from 'axios';
 
 function Signup() {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [userExistance, setUserExistance] = useState(false);
@@ -16,7 +17,7 @@ function Signup() {
 
         event.preventDefault();
 
-        axios.post(`${process.env.REACT_APP_BACKEND_URL}/signUp`, {email, password}, {withCredentials: true})
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/signUp`, {name, email, password}, {withCredentials: true})
         .then( (res)=>{
             //checks the status code. if 201, user is new and brings user in dashboard
             if(res.status === 201){
@@ -36,6 +37,7 @@ function Signup() {
         })
 
         
+        setName("");
         setEmail("");
         setPassword("");
     }
@@ -44,6 +46,19 @@ function Signup() {
         <div className='signup-container'>
             <form className='signup-form' onSubmit={handleSubmit}>
                 <h2 className='text-center'>Sign Up</h2>
+                
+                <div className='form-group'>
+                    <label htmlFor="name">Full Name</label>
+                    <input
+                        type='text'
+                        id='name'
+                        placeholder='Enter your full name'
+                        value={name}
+                        required
+                        onChange={(e)=> setName(e.target.value)}
+                        className='form-control'
+                    />
+                </div>
                 
                 <div className='form-group'>
                     <label htmlFor="email">Email Address</label>

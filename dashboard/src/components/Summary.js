@@ -14,10 +14,11 @@ const Summary = () => {
           {},
           { withCredentials: true }
         );
-        if (res.data.status) {
-          const email = res.data.user;
-          const namePart = email.split("@")[0];
-          setUserName(namePart.toUpperCase());
+        console.log("verifyCookie response:", res.data);
+        if (res.data.status && res.data.user) {
+          const displayName = res.data.user.name;
+          console.log("displayName:", displayName);
+          setUserName(displayName.toUpperCase());
         }
       } catch (error) {
         console.error("Error fetching user:", error);

@@ -5,18 +5,20 @@ const {createSecretToken} = require("./SecretToken.js");
 module.exports.SignUp = async (req, res, next) => {
     try {
      
-      const { email, password } = req.body;
+      const { name, email, password } = req.body;
       //console.log(`${email}--------${password}`); 
 
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         return res.status(202).json({ message: "User already exists" });
       }
-      const user = await User.create({ email, password });
+      const user = await User.create({ name, email, password });
       const token = createSecretToken(user._id);
       res.cookie("token", token, {
-        withCredentials: true,
         httpOnly: false,
+        sameSite: "lax",
+        secure: false,
+        path: "/",
       });
       res
         .status(201)
@@ -43,12 +45,25 @@ module.exports.LogIn = async (req, res, next) => {
     }
      const token = createSecretToken(user._id);
      res.cookie("token", token, {
-       withCredentials: true,
        httpOnly: false,
+       sameSite: "lax",
+       secure: false,
+       path: "/",
      });
      res.status(201).json({ message: "User logged in successfully", success: true });
      next()
   } catch (error) {
     console.error(error);
   }
-}
+};
+
+module.exports.LogOut = (req, res) => {
+  res.cookie("token", "", {
+    httpOnly: false,
+    sameSite: "lax",
+    secure: false,
+    path: "/",
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: "Logged out successfully", success: true });
+};

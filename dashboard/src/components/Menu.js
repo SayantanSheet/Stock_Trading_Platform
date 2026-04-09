@@ -18,11 +18,11 @@ const Menu = () => {
           {},
           { withCredentials: true }
         );
-        if (res.data.status) {
-          const email = res.data.user;
-          const namePart = email.split("@")[0];
-          setUserName(namePart.toUpperCase());
-          setUserAvatar(namePart.substring(0, 2).toUpperCase());
+        if (res.data.status && res.data.user) {
+          const user = res.data.user;
+          const displayName = user.name || (user.email ? user.email.split("@")[0] : "User");
+          setUserName(displayName.toUpperCase());
+          setUserAvatar(displayName.substring(0, 2).toUpperCase());
         }
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -45,13 +45,21 @@ const Menu = () => {
     setIsProfileDropdownOpen( !isProfileDropdownOpen );
   }
 //logout funtionality and redirecting to login
-  const handleLogout = ()=>{
+  const handleLogout = () => {
     console.log("handle log out clicked");
-    localStorage.removeItem('token'); 
-    setTimeout(()=>{
-          window.location.href = `${process.env.REACT_APP_FRONTEND_URL}/logIn`;  
+    axios.post(`${process.env.REACT_APP_BACKEND_URL}/logout`, {}, { withCredentials: true })
+      .then(() => {
+        localStorage.removeItem('token');
+        setTimeout(() => {
+          window.location.href = `${process.env.REACT_APP_FRONTEND_URL}/login`;
           window.history.pushState(null, "", window.location.href);
-    }, 500);
+        }, 500);
+      })
+      .catch((err) => {
+        console.error("Logout error:", err);
+        // Fallback redirect even if backend call fails
+        window.location.href = `${process.env.REACT_APP_FRONTEND_URL}/logIn`;
+      });
   }
 
   const menuClass = "menu";
@@ -133,7 +141,7 @@ const Menu = () => {
         {isProfileDropdownOpen &&
         <div className="tooltip-widget">
           <div>
-              <i class="fa-solid fa-xmark tooltip-widget-icon"
+              <i className="fa-solid fa-xmark tooltip-widget-icon"
                   onClick={ ()=> handleCrossIconClick() }
               ></i>
           </div>

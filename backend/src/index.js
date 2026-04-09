@@ -15,8 +15,7 @@ const { HoldingsModel } = require('./model/HoldingsModel');
 const { PositionsModel } = require('./model/PositionsModel');
 const { OrdersModel } = require('./model/OrdersModel');
 const { WatchlistModel } = require('./model/WatchlistModel');
-const { SignUp } = require('./utility/AuthController');
-const { LogIn } = require('./utility/AuthController');
+const { SignUp, LogIn, LogOut } = require('./utility/AuthController');
 const { userVerification } = require('./utility/Middlewares');
 
 const app = express();
@@ -124,5 +123,7 @@ app.post("/newOrder", async (req, res) => {
 app.post("/signUp", SignUp);
 
 app.post('/login', LogIn);
+
+app.post('/logout', LogOut);
 
 app.post('/verifyCookie', userVerification);
