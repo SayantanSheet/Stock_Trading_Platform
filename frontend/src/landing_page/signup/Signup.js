@@ -14,6 +14,8 @@ function Signup() {
         axios.post(`${process.env.REACT_APP_BACKEND_URL}/signUp`, {name, email, password}, {withCredentials: true})
         .then( (res)=>{
             if(res.status === 201){
+                const { token } = res.data;
+                localStorage.setItem("token", token);
                 toast.success("Account created successfully!");
                 setTimeout(()=>{
                     window.location.href = process.env.REACT_APP_DASHBOARD_URL;

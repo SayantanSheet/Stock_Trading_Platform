@@ -3,9 +3,18 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 module.exports.userVerification = (req, res) => {
-  const token = req.cookies.token;
+  let token = req.cookies.token;
+  
+  // Check Authorization header if cookie is missing (Bearer <token>)
+  if (!token && req.headers.authorization) {
+    const authHeader = req.headers.authorization;
+    if (authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7);
+    }
+  }
+
   if (!token) {
-    console.log("Verification failed: Token cookie missing");
+    console.log("Verification failed: No token found in cookies or headers");
     return res.json({ status: false });
   }
   jwt.verify(token, process.env.TOKEN_KEY, async (err, data) => {

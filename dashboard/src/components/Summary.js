@@ -9,10 +9,16 @@ const Summary = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        const token = localStorage.getItem("token");
         const res = await axios.post(
           `${process.env.REACT_APP_BACKEND_URL}/verifyCookie`,
           {},
-          { withCredentials: true }
+          { 
+            withCredentials: true,
+            headers: {
+                Authorization: token ? `Bearer ${token}` : ""
+            }
+          }
         );
         console.log("verifyCookie response:", res.data);
         if (res.data.status && res.data.user) {

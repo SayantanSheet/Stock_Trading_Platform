@@ -22,7 +22,7 @@ module.exports.SignUp = async (req, res, next) => {
       });
       res
         .status(201)
-        .json({ message: "User signed in successfully", success: true, user });
+        .json({ message: "User signed in successfully", success: true, user, token });
       next();
     } catch (error) {
       console.error(error);
@@ -50,7 +50,7 @@ module.exports.LogIn = async (req, res, next) => {
        secure: true,
        path: "/",
      });
-     res.status(201).json({ message: "User logged in successfully", success: true });
+     res.status(201).json({ message: "User logged in successfully", success: true, token, user });
      next()
   } catch (error) {
     console.error(error);
